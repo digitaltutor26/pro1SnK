@@ -1,0 +1,110 @@
+{
+  "ko": {
+    "nav": {
+      "services": "서비스",
+      "about": "회사소개",
+      "contact": "문의하기"
+    },
+    "hero": {
+      "catchphrase": "(주)에스앤케이시스템즈: 우리는 웹 기술의 미래를 만듭니다",
+      "description": "글로벌 디지털 전환을 위해 최첨단 소프트웨어 엔지니어링, 대화형 웹 애플리케이션 및 혁신적인 클라우드 솔루션을 제공합니다.",
+      "cta": "문의하기"
+    },
+    "services": {
+      "title": "주요 서비스",
+      "description": "안정적인 확장성과 비즈니스 가치 창출을 위한 맞춤형 소프트웨어 설계 및 개발 솔루션.",
+      "items": [
+        {
+          "icon": "💻",
+          "title": "맞춤형 웹 애플리케이션",
+          "description": "Next.js, React, TypeScript 기반의 빠르고 안전하며 현대적인 웹 애플리케이션 구축."
+        },
+        {
+          "icon": "📱",
+          "title": "모바일 솔루션",
+          "description": "높은 사용자 경험과 부드러운 인터랙션이 가미된 고성능 iOS 및 Android 애플리케이션."
+        },
+        {
+          "icon": "☁️",
+          "title": "클라우드 엔지니어링",
+          "description": "인프라 확장, 배포 자동화 파이프라인 및 최고 수준의 고가용성 보안 환경 구축."
+        }
+      ]
+    },
+    "about": {
+      "title": "회사 소개",
+      "description1": "(주)에스앤케이시스템즈(SnK Systems)는 혁신적인 소프트웨어 솔루션을 창조하는 열정적인 엔지니어 및 전문가 집단입니다.",
+      "description2": "정교한 소프트웨어 아키텍처 설계와 유연한 사용자 경험(UX) 개발을 통해 안정적으로 성장하고 확장할 수 있는 디지털 제품을 설계합니다.",
+      "missionTitle": "우리의 미션",
+      "missionDesc": "실제 비즈니스 과제를 해결하고 뛰어난 사용자 경험을 제공하는 예외적이고 신뢰할 수 있는 엔지니어링 기술을 선사합니다.",
+      "visionTitle": "우리의 비전",
+      "visionDesc": "기술적 정교함, 설계의 무결성, 그리고 최고의 만족도를 바탕으로 인정받는 글로벌 기술 파트너가 되는 것입니다."
+    },
+    "contact": {
+      "title": "문의 접수",
+      "success": "문의가 성공적으로 전송되었습니다! 곧 연락드리겠습니다.",
+      "networkError": "네트워크 오류가 발생했습니다. 인터넷 연결을 확인해 주세요.",
+      "generalError": "서버 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.",
+      "form": {
+        "name": "이름",
+        "email": "이메일 주소",
+        "message": "문의 내용",
+        "submit": "메시지 보내기"
+      }
+    }
+  },
+  "en": {
+    "nav": {
+      "services": "Services",
+      "about": "About Us",
+      "contact": "Contact"
+    },
+    "hero": {
+      "catchphrase": "SnK Systems: We Build the Future of Web Technology",
+      "description": "Providing state-of-the-art software engineering, interactive web applications, and cutting-edge design solutions for global digital transformation.",
+      "cta": "Get in Touch"
+    },
+    "services": {
+      "title": "Our Services",
+      "description": "Tailored core software design, robust engineering, and technical development solutions engineered to scale.",
+      "items": [
+        {
+          "icon": "💻",
+          "title": "Custom Web Apps",
+          "description": "Building fast, secure, and modern web applications with Next.js, React, and TypeScript."
+        },
+        {
+          "icon": "📱",
+          "title": "Mobile Solutions",
+          "description": "High-performance iOS and Android applications tailored for high user engagement and fluid design."
+        },
+        {
+          "icon": "☁️",
+          "title": "Cloud Engineering",
+          "description": "Scaling infrastructure, automating deployment pipelines, and ensuring secure high-availability cloud setups."
+        }
+      ]
+    },
+    "about": {
+      "title": "About SnK Systems",
+      "description1": "We are a passionate team of innovators, engineers, and digital specialists who love creating high-impact software solutions at SnK Systems.",
+      "description2": "By bridging the gap between sophisticated software design and fluid user experience functionality, we build digital products that scale seamlessly.",
+      "missionTitle": "Our Mission",
+      "missionDesc": "To deliver exceptional, reliable technological engineering that solves real business challenges and delivers outstanding user experiences.",
+      "visionTitle": "Our Vision",
+      "visionDesc": "To be the preferred global technological partner, recognized for technical sophistication, design integrity, and customer satisfaction."
+    },
+    "contact": {
+      "title": "Contact Us",
+      "success": "Thank you for contacting us! We will get back to you shortly.",
+      "networkError": "Network error. Please check your connection.",
+      "generalError": "An error occurred. Please try again.",
+      "form": {
+        "name": "Name",
+        "email": "Email Address",
+        "message": "Message",
+        "submit": "Send Message"
+      }
+    }
+  }
+}
