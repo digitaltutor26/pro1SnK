@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export default function Home() {
   const [name, setName] = useState('');
@@ -9,6 +9,31 @@ export default function Home() {
   const [errors, setErrors] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
+
+  // Initialize Dark Mode state based on preferences
+  useEffect(() => {
+    const isDark = localStorage.getItem('theme') === 'dark' || 
+      (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    setDarkMode(isDark);
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, []);
+
+  const toggleDarkMode = () => {
+    const newDark = !darkMode;
+    setDarkMode(newDark);
+    if (newDark) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  };
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);
@@ -34,7 +59,7 @@ export default function Home() {
     setErrors((prev) => prev.filter((err) => !err.toLowerCase().includes('message')));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isSubmitting) return;
     setIsSubmitting(true);
@@ -68,29 +93,78 @@ export default function Home() {
       return;
     }
 
-    // Reset errors and fields on success
-    setErrors([]);
-    setSubmitted(true);
-    setName('');
-    setEmail('');
-    setMessage('');
-    setIsSubmitting(false);
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, message }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setErrors(data.errors || ['An error occurred. Please try again.']);
+      } else {
+        setErrors([]);
+        setSubmitted(true);
+        setName('');
+        setEmail('');
+        setMessage('');
+      }
+    } catch (err) {
+      setErrors(['Network error. Please check your connection.']);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <main className="min-h-screen bg-gray-50 text-gray-900 font-sans">
+    <main className="min-h-screen bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 font-sans transition-colors duration-300">
+      {/* Sticky Header */}
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 dark:bg-gray-950/80 border-b border-gray-100 dark:border-gray-800 transition-colors duration-300">
+        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <span className="text-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 bg-clip-text text-transparent">
+              SnK Systems
+            </span>
+          </div>
+          <nav className="hidden md:flex items-center space-x-8 text-sm font-medium">
+            <a href="#services" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Services</a>
+            <a href="#about" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">About</a>
+            <a href="#contact" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Contact</a>
+          </nav>
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={toggleDarkMode}
+              className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              aria-label="Toggle Dark Mode"
+            >
+              {darkMode ? '☀️' : '🌙'}
+            </button>
+            <a
+              href="#contact"
+              className="hidden sm:inline-block bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition-colors"
+            >
+              Get Started
+            </a>
+          </div>
+        </div>
+      </header>
+
       {/* Hero Section */}
-      <section className="py-16 md:py-24 bg-white border-b border-gray-100" data-testid="hero-section">
+      <section className="py-20 md:py-32 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 transition-colors duration-300" data-testid="hero-section">
         <div className="max-w-4xl mx-auto text-center px-6">
-          <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold tracking-tight text-gray-900 mb-4 md:mb-6" data-testid="hero-catchphrase">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-tight mb-6 bg-gradient-to-r from-gray-900 via-blue-900 to-indigo-950 dark:from-white dark:via-blue-200 dark:to-indigo-100 bg-clip-text text-transparent leading-none" data-testid="hero-catchphrase">
             SnK Systems: We Build the Future of Web Technology
           </h1>
-          <p className="text-lg md:text-xl text-gray-600 mb-8 md:mb-10 max-w-2xl mx-auto leading-relaxed">
-            Providing state-of-the-art software engineering, interactive web applications, and cutting-edge design solutions.
+          <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-10 max-w-2xl mx-auto leading-relaxed">
+            Providing state-of-the-art software engineering, interactive web applications, and cutting-edge design solutions for global digital transformation.
           </p>
           <a
             href="#contact"
-            className="inline-block bg-blue-600 text-white px-6 py-3 md:px-8 md:py-4 rounded-lg font-semibold hover:bg-blue-700 hover:shadow-lg transition duration-200"
+            className="inline-block bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-8 py-4 rounded-xl font-bold hover:shadow-lg dark:hover:shadow-blue-500/20 transform hover:-translate-y-0.5 transition-all duration-200"
             data-testid="hero-cta"
           >
             Get in Touch
@@ -99,33 +173,35 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <section id="services" className="py-16 md:py-24 bg-gray-50 border-b border-gray-100" data-testid="services-section">
+      <section id="services" className="py-20 md:py-32 bg-gray-50 dark:bg-gray-950 border-b border-gray-100 dark:border-gray-800 transition-colors duration-300" data-testid="services-section">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center max-w-2xl mx-auto mb-10 md:mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Our Services</h2>
-            <p className="text-gray-600 text-sm sm:text-base">Tailored core software design, robust engineering, and technical development solutions.</p>
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <h2 className="text-3xl sm:text-4xl font-extrabold mb-4 text-gray-900 dark:text-white">Our Services</h2>
+            <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base leading-relaxed">
+              Tailored core software design, robust engineering, and technical development solutions engineered to scale.
+            </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-            <div className="p-6 md:p-8 bg-white rounded-xl shadow-sm border border-gray-100 text-left hover:shadow-md transition">
-              <div className="text-blue-600 text-3xl mb-4">💻</div>
-              <h3 className="text-xl font-bold mb-3">Custom Web Apps</h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="p-8 bg-white dark:bg-gray-900 rounded-2xl shadow-sm hover:shadow-xl border border-gray-100 dark:border-gray-800 hover:-translate-y-1 transform transition-all duration-300 text-left">
+              <div className="w-12 h-12 flex items-center justify-center bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-2xl rounded-xl mb-6">💻</div>
+              <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">Custom Web Apps</h3>
+              <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
                 Building fast, secure, and modern web applications with Next.js, React, and TypeScript.
               </p>
             </div>
-            <div className="p-6 md:p-8 bg-white rounded-xl shadow-sm border border-gray-100 text-left hover:shadow-md transition">
-              <div className="text-blue-600 text-3xl mb-4">📱</div>
-              <h3 className="text-xl font-bold mb-3">Mobile Solutions</h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                High-performance iOS and Android applications tailored for high user engagement.
+            <div className="p-8 bg-white dark:bg-gray-900 rounded-2xl shadow-sm hover:shadow-xl border border-gray-100 dark:border-gray-800 hover:-translate-y-1 transform transition-all duration-300 text-left">
+              <div className="w-12 h-12 flex items-center justify-center bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-2xl rounded-xl mb-6">📱</div>
+              <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">Mobile Solutions</h3>
+              <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                High-performance iOS and Android applications tailored for high user engagement and fluid design.
               </p>
             </div>
-            <div className="p-6 md:p-8 bg-white rounded-xl shadow-sm border border-gray-100 text-left hover:shadow-md transition">
-              <div className="text-blue-600 text-3xl mb-4">☁️</div>
-              <h3 className="text-xl font-bold mb-3">Cloud Engineering</h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                Scaling infrastructure, automating deployment pipelines, and ensuring secure high-availability configurations.
+            <div className="p-8 bg-white dark:bg-gray-900 rounded-2xl shadow-sm hover:shadow-xl border border-gray-100 dark:border-gray-800 hover:-translate-y-1 transform transition-all duration-300 text-left">
+              <div className="w-12 h-12 flex items-center justify-center bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-2xl rounded-xl mb-6">☁️</div>
+              <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">Cloud Engineering</h3>
+              <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
+                Scaling infrastructure, automating deployment pipelines, and ensuring secure high-availability cloud setups.
               </p>
             </div>
           </div>
@@ -133,28 +209,28 @@ export default function Home() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-16 md:py-24 bg-white border-b border-gray-100" data-testid="about-section">
+      <section id="about" className="py-20 md:py-32 bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 transition-colors duration-300" data-testid="about-section">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="text-left">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 md:mb-6">About SnK Systems</h2>
-              <p className="text-base sm:text-lg text-gray-600 leading-relaxed mb-4">
+              <h2 className="text-3xl sm:text-4xl font-extrabold mb-6 text-gray-900 dark:text-white">About SnK Systems</h2>
+              <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
                 We are a passionate team of innovators, engineers, and digital specialists who love creating high-impact software solutions at SnK Systems.
               </p>
-              <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
+              <p className="text-gray-600 dark:text-gray-300 text-sm sm:text-base leading-relaxed">
                 By bridging the gap between sophisticated software design and fluid user experience functionality, we build digital products that scale seamlessly.
               </p>
             </div>
-            <div className="space-y-4 md:space-y-6">
-              <div className="p-5 md:p-6 bg-gray-50 rounded-lg border border-gray-100 text-left">
-                <h3 className="text-base md:text-lg font-bold mb-2 text-blue-600">Our Mission</h3>
-                <p className="text-gray-600 text-xs sm:text-sm">
+            <div className="space-y-6">
+              <div className="p-6 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 text-left transition-colors duration-300">
+                <h3 className="text-base md:text-lg font-bold mb-2 text-blue-600 dark:text-blue-400">Our Mission</h3>
+                <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm">
                   To deliver exceptional, reliable technological engineering that solves real business challenges and delivers outstanding user experiences.
                 </p>
               </div>
-              <div className="p-5 md:p-6 bg-gray-50 rounded-lg border border-gray-100 text-left">
-                <h3 className="text-base md:text-lg font-bold mb-2 text-blue-600">Our Vision</h3>
-                <p className="text-gray-600 text-xs sm:text-sm">
+              <div className="p-6 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700 text-left transition-colors duration-300">
+                <h3 className="text-base md:text-lg font-bold mb-2 text-blue-600 dark:text-blue-400">Our Vision</h3>
+                <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm">
                   To be the preferred global technological partner, recognized for technical sophistication, design integrity, and customer satisfaction.
                 </p>
               </div>
@@ -164,16 +240,16 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-12 md:py-20 bg-gray-50">
-        <div className="max-w-xl mx-auto px-4">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-6 md:mb-8">Contact Us</h2>
+      <section id="contact" className="py-20 bg-gray-50 dark:bg-gray-950 transition-colors duration-300">
+        <div className="max-w-xl mx-auto px-6">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-center mb-8 text-gray-900 dark:text-white">Contact Us</h2>
           
           {submitted && (
             <div
               data-testid="success-feedback"
               role="status"
               aria-live="polite"
-              className="mb-6 p-4 bg-green-100 text-green-700 rounded-md border border-green-200 text-center font-medium"
+              className="mb-6 p-4 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-xl border border-green-200 dark:border-green-800 text-center font-medium"
             >
               Thank you for contacting us! We will get back to you shortly.
             </div>
@@ -183,7 +259,7 @@ export default function Home() {
             <div
               role="alert"
               aria-live="assertive"
-              className="mb-6 p-4 bg-red-100 text-red-700 rounded-md border border-red-200 space-y-1"
+              className="mb-6 p-4 bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-xl border border-red-200 dark:border-red-800 space-y-1"
             >
               {errors.map((error, index) => {
                 let errId = "";
@@ -199,9 +275,9 @@ export default function Home() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="bg-white p-6 md:p-8 rounded-lg shadow-sm border space-y-4 md:space-y-6" noValidate>
+          <form onSubmit={handleSubmit} className="bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 space-y-6 transition-colors duration-300" noValidate>
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="name" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                 Name
               </label>
               <input
@@ -213,11 +289,11 @@ export default function Home() {
                 maxLength={100}
                 aria-invalid={errors.some((err) => err.toLowerCase().includes('name'))}
                 aria-describedby={errors.some((err) => err.toLowerCase().includes('name')) ? "name-error" : undefined}
-                className="w-full border-gray-300 rounded-md shadow-sm py-2.5 px-3 md:py-3 md:px-4 border focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+                className="w-full border-gray-300 dark:border-gray-700 rounded-xl shadow-sm py-3 px-4 border bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
               />
             </div>
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="email" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                 Email
               </label>
               <input
@@ -229,11 +305,11 @@ export default function Home() {
                 maxLength={100}
                 aria-invalid={errors.some((err) => err.toLowerCase().includes('email'))}
                 aria-describedby={errors.some((err) => err.toLowerCase().includes('email')) ? "email-error" : undefined}
-                className="w-full border-gray-300 rounded-md shadow-sm py-2.5 px-3 md:py-3 md:px-4 border focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+                className="w-full border-gray-300 dark:border-gray-700 rounded-xl shadow-sm py-3 px-4 border bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
               />
             </div>
             <div>
-              <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="message" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                 Message
               </label>
               <textarea
@@ -245,7 +321,7 @@ export default function Home() {
                 maxLength={1000}
                 aria-invalid={errors.some((err) => err.toLowerCase().includes('message'))}
                 aria-describedby={errors.some((err) => err.toLowerCase().includes('message')) ? "message-error" : undefined}
-                className="w-full border-gray-300 rounded-md shadow-sm py-2.5 px-3 md:py-3 md:px-4 border focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
+                className="w-full border-gray-300 dark:border-gray-700 rounded-xl shadow-sm py-3 px-4 border bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
               />
             </div>
             <div>
@@ -253,7 +329,7 @@ export default function Home() {
                 type="submit"
                 data-testid="contact-submit"
                 disabled={isSubmitting}
-                className="w-full bg-blue-600 text-white py-3 px-4 rounded-md font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all disabled:opacity-50"
+                className="w-full bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white py-3.5 px-4 rounded-xl font-bold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all disabled:opacity-50"
               >
                 Send Message
               </button>
