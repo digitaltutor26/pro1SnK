@@ -1,70 +1,87 @@
-# Project Progress & Roadmap - SnK Systems Landing Page
+# Project Progress & Roadmap / 프로젝트 진행 상황 및 로드맵 (PROGRESS.md)
 
-This file tracks the project's development history, completed tasks, and future roadmap. It is maintained under version control on GitHub to ensure transparency.
+This file tracks the project's development history, completed tasks, and future roadmap in both English and Korean.
+본 문서는 프로젝트의 개발 이력, 완료된 작업 및 향후 로드맵을 영문과 한글로 나누어 기록하고 관리합니다.
 
 ---
 
-## 📈 Current Status
+## 🇰🇷 한국어 버전 (Korean Version)
+
+### 📈 현재 상태
+* **최종 업데이트**: 2026-07-12
+* **현재 버전**: v1.1
+* **E2E 테스트 성공률**: 100% (110개 테스트 전체 통과)
+* **Vercel 배포 상태**: 준비 완료 (GitHub 저장소 연동 대기 중)
+
+### 📅 버전 이력 (일자별 개발 로그)
+
+#### 2026-07-12 (v1.1) - 다국어 및 브랜딩 업데이트
+* **한/영 다국어 지원 (KO/EN)**:
+  * 웹사이트의 모든 텍스트 문구를 [content.json](file:///Users/seungwonseo/multi-agent-test/company_landing/src/app/content.json)으로 분리 완료.
+  * 헤더에 한국어/영어 토글 버튼(KO | EN) 배치 및 브라우저 세션(`localStorage`) 연동.
+* **(주)에스앤케이시스템즈 한국어 브랜딩**:
+  * 사명 명시: **SnK Systems ((주)에스앤케이시스템즈)** 헤더 및 소개글 반영.
+  * 추후 로고 이미지 교체가 쉽도록 파일 경로 플레이스홀더 제공.
+* **메일 수신 주소 라우팅**:
+  * [route.ts](file:///Users/seungwonseo/multi-agent-test/company_landing/src/app/api/contact/route.ts) API를 업데이트하여 Vercel 환경 변수(`RESEND_API_KEY`, `CONTACT_RECEIVER_EMAIL`) 설정 시 실무 메일로 전송되도록 구현.
+* **개발 가이드 문서 추가**:
+  * 다국어 개발 가이드 문서인 [PROCESS.md](file:///Users/seungwonseo/multi-agent-test/company_landing/PROCESS.md) 작성 완료.
+
+#### 2026-07-12 (v1.0) - 다크모드 및 프리미엄 UX 개선
+* **테마 전환 추가**: 쿠키 및 사용자 선호도 기반 다크 모드 활성화 및 Tailwind 설정.
+* **품질 검증 오류 해결**: 포트 3000번 점유 프로세스 자동 해제 및 Next.js 라우트 아나운서 선택자 중복 에러 해결.
+* **최초 깃허브 푸시**: [digitaltutor26/pro1SnK](https://github.com/digitaltutor26/pro1SnK) 리포지토리에 소스코드 업로드.
+
+### 📋 작업 보드 (남은 일 및 향후 마일스톤)
+
+#### ⬜ 남은 작업 (To-Do)
+1. **로고 이미지 파일 등록**:
+   * 임시 텍스트 로고를 실제 기업 로고 이미지 파일(예: `logo.png`)로 교체 업로드.
+2. **Vercel 대시보드 환경변수 세팅**:
+   * `CONTACT_RECEIVER_EMAIL` (문의를 수신할 메일 주소) 입력.
+   * `RESEND_API_KEY` (Resend 전송용 API 인증키) 입력.
+3. **디자인 검토 피드백 반영**:
+   * 로컬이나 배포 페이지 확인 후 요청하시는 레이아웃 수정 및 디자인 반영.
+
+---
+
+## 🇺🇸 English Version (영어 버전)
+
+### 📈 Current Status
 * **Last Updated**: 2026-07-12
 * **Current Version**: v1.1
 * **E2E Test Success Rate**: 100% (110/110 tests passed)
 * **Vercel Deploy Status**: Ready (Awaiting GitHub link setup in Vercel UI)
 
----
+### 📅 Version History (Date-based Logs)
 
-## 📅 Version History (Date-based Logs)
-
-### 2026-07-12 (v1.1) - Bilingual & Branding Update
-* **Added Bilingual Support (KO/EN)**:
+#### 2026-07-12 (v1.1) - Bilingual & Branding Update
+* **Bilingual Support (KO/EN)**:
   * Extracted all website copy to a single [content.json](file:///Users/seungwonseo/multi-agent-test/company_landing/src/app/content.json) file.
   * Added a language toggle button (KO | EN) in the navigation header.
   * Configured state management to persist user's language preferences in `localStorage`.
-* **Korean Branding & Logo Layout**:
+* **SnK Systems Branding**:
   * Set corporate name: **SnK Systems ((주)에스앤케이시스템즈)** in the Header and About sections.
   * Structured the header to accommodate an image logo with clean SVGs as a placeholder.
 * **Email Destination Setup**:
-  * Programmed the [route.ts](file:///Users/seungwonseo/multi-agent-test/company_landing/src/app/api/contact/route.ts) API handler to dynamically fetch environment variables (`RESEND_API_KEY` and `CONTACT_RECEIVER_EMAIL`) on Vercel to route submissions to a real email address, falling back to console logging locally.
-* **Local vs. Vercel Alignment**:
-  * Verified that local execution (`npm run dev`) and Vercel deployment will look and behave 100% identically due to static compiling.
+  * Programmed the [route.ts](file:///Users/seungwonseo/multi-agent-test/company_landing/src/app/api/contact/route.ts) API handler to dynamically fetch environment variables (`RESEND_API_KEY` and `CONTACT_RECEIVER_EMAIL`) on Vercel to route submissions to a real email address.
+* **Process Documentation**:
+  * Created a bilingual development guide [PROCESS.md](file:///Users/seungwonseo/multi-agent-test/company_landing/PROCESS.md).
 
-### 2026-07-12 (v1.0) - Premium UI & Linter Fixes
+#### 2026-07-12 (v1.0) - Premium UI & Linter Fixes
 * **UI Refinements & Dark Mode**:
-  * Enabled class-based dark mode toggle.
-  * Configured Tailwind dark utilities.
+  * Enabled class-based dark mode toggle and Tailwind dark configurations.
   * Integrated CSS micro-interactions and hover scales.
 * **Testing & Conflict Resolution**:
-  * Resolved the port 3000 occupation issue.
-  * Excluded Next.js announcer in Playwright locators.
-  * Pushed initial clean build codebase to [digitaltutor26/pro1SnK](https://github.com/digitaltutor26/pro1SnK).
+  * Resolved the port 3000 occupation issue and Next.js route announcer locator error.
+  * Pushed initial build to [digitaltutor26/pro1SnK](https://github.com/digitaltutor26/pro1SnK).
 
----
+### 📋 Task Board (Remaining & Future Work)
 
-## 📋 Task Board (Remaining & Future Work)
-
-### ⬜ Remaining Tasks (To-Do)
+#### ⬜ Remaining Tasks (To-Do)
 1. **Logo Image Upload**:
    * Replace placeholder text logo with a real corporate image logo asset (e.g. `logo.png`).
 2. **Vercel Dashboard Setup**:
-   * Log into Vercel and import the GitHub repository `pro1SnK`.
-   * Set Environment Variables on Vercel dashboard:
-     * `CONTACT_RECEIVER_EMAIL` = `your-inbox@example.com` (Target email to receive inquiries).
-     * `RESEND_API_KEY` = `re_...` (Resend API key for secure delivery).
+   * Set Environment Variables: `CONTACT_RECEIVER_EMAIL` and `RESEND_API_KEY` on Vercel dashboard.
 3. **Design Review Adjustments**:
    * Implement layouts or styles based on design feedback.
-
----
-
-## 📝 Content Editing & Image Upload Guide
-
-We have simplified the content upload workflow so it can be managed easily:
-
-### 1. How to Modify Website Text (Easiest Method)
-All website text strings are separated in [content.json](file:///Users/seungwonseo/multi-agent-test/company_landing/src/app/content.json).
-1. Open `content.json` in a text editor (or edit it directly on the GitHub website UI).
-2. Modify values under `"ko"` (for Korean text) or `"en"` (for English text).
-3. Save, commit, and push (`git push`). Vercel will automatically rebuild and update the live page.
-
-### 2. How to Upload New Images
-1. Place your new image file inside the `public/` directory (e.g., `public/logo.png` or `public/images/office.jpg`).
-2. In the code, reference the image path starting with `/` (e.g., `<img src="/logo.png" />` or `<img src="/images/office.jpg" />`).
-3. Commit and push the image to GitHub.
