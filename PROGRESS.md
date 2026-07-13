@@ -8,12 +8,18 @@ This file tracks the project's development history, completed tasks, and future 
 ## 🇰🇷 한국어 버전 (Korean Version)
 
 ### 📈 현재 상태
-* **최종 업데이트**: 2026-07-12
-* **현재 버전**: v1.1
+* **최종 업데이트**: 2026-07-13
+* **현재 버전**: v1.2
 * **E2E 테스트 성공률**: 100% (110개 테스트 전체 통과)
-* **Vercel 배포 상태**: 준비 완료 (GitHub 저장소 연동 대기 중)
+* **Vercel 배포 상태**: 준비 완료 (Linter 빌드 오류 패치 완료)
 
 ### 📅 버전 이력 (일자별 개발 로그)
+
+#### 2026-07-13 (v1.2) - ESLint 및 Vercel 빌드 패치
+* **빌드 중단 에러 해결**:
+  * `page.tsx` 내부 `catch (err)` 문에서 사용하지 않던 `err` 변수를 제거하여 `@typescript-eslint/no-unused-vars` 에러를 방지했습니다.
+  * 서비스 섹션 리스트 맵핑 부분에서 `item: any` 형식을 구체적인 인터페이스 구조 `item: { icon: string; title: string; description: string }`로 치환하여 `@typescript-eslint/no-explicit-any` 경고를 해결했습니다.
+  * 로컬 최적화 빌드(`npm run build`) 테스트를 완수하여 오류 및 경고가 0개임을 검증했습니다.
 
 #### 2026-07-12 (v1.1) - 다국어 및 브랜딩 업데이트
 * **한/영 다국어 지원 (KO/EN)**:
@@ -48,12 +54,18 @@ This file tracks the project's development history, completed tasks, and future 
 ## 🇺🇸 English Version (영어 버전)
 
 ### 📈 Current Status
-* **Last Updated**: 2026-07-12
-* **Current Version**: v1.1
+* **Last Updated**: 2026-07-13
+* **Current Version**: v1.2
 * **E2E Test Success Rate**: 100% (110/110 tests passed)
-* **Vercel Deploy Status**: Ready (Awaiting GitHub link setup in Vercel UI)
+* **Vercel Deploy Status**: Ready (Linter compilation patch applied)
 
 ### 📅 Version History (Date-based Logs)
+
+#### 2026-07-13 (v1.2) - ESLint & Vercel Build Patch
+* **Resolved Build Blockers**:
+  * Removed the unused `err` variable inside the `catch (err)` block in `page.tsx` to fix `@typescript-eslint/no-unused-vars` error.
+  * Provided explicit inline types for `item` in the services list mapper instead of using `any` to resolve `@typescript-eslint/no-explicit-any` warning.
+  * Verified local optimized builds (`npm run build`) complete successfully with 0 warnings or errors.
 
 #### 2026-07-12 (v1.1) - Bilingual & Branding Update
 * **Bilingual Support (KO/EN)**:

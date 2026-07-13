@@ -126,7 +126,7 @@ export default function Home() {
         setEmail('');
         setMessage('');
       }
-    } catch (err) {
+    } catch {
       setErrors([lang === 'ko' ? '네트워크 오류가 발생했습니다.' : 'Network error.']);
     } finally {
       setIsSubmitting(false);
@@ -222,7 +222,7 @@ export default function Home() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {t.services.items.map((item: any, index: number) => (
+            {t.services.items.map((item: { icon: string; title: string; description: string }, index: number) => (
               <div key={index} className="p-8 bg-white dark:bg-gray-900 rounded-2xl shadow-sm hover:shadow-xl border border-gray-100 dark:border-gray-800 hover:-translate-y-1 transform transition-all duration-300 text-left">
                 <div className="w-12 h-12 flex items-center justify-center bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-2xl rounded-xl mb-6">
                   {item.icon}
